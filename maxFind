@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class ftree {
+public:
+    vector<int> tree;
+    int n;
+
+    ftree(int n) {
+        tree.resize(n + 1, 0);
+        this->n = n;
+    }
+
+    void update(int i, int val) {
+        while (i <= n) {
+            tree[i] = max(val,tree[i]);
+            i += (i & -i);
+        }
+    }
+
+    int maxa(int i) {
+        int ans = 0;
+        while (i > 0) {
+            ans = max(ans,tree[i]);
+            i -= (i & -i);
+        }
+        return ans;
+    }
+};
+
+int main() {
+    int n = 5;
+    vector<int> arr = {1, 2, 3, 4, 5};
+
+    ftree t(n);
+
+    for (int i = 0; i < n; i++) {
+        t.update(i + 1, arr[i]);
+    }
+
+    cout << t.maxa(3) << endl;
+    t.update(3, 9);
+    cout << t.maxa(3) << endl;
+}
